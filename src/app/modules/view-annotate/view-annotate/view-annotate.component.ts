@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'ci-view-annotate',
-  imports: [],
-  template: `<p>view-annotate works!</p>`,
+  imports: [MatSlideToggleModule],
+  templateUrl: './view-annotate.component.html',
   styleUrl: './view-annotate.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
