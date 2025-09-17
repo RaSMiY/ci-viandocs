@@ -1,0 +1,22 @@
+:host {
+  .logo-rasmiy {
+    background-color: #faf9fd;
+    padding         : 0 10px 0 0;
+  }
+
+  display: block;
+
+  .header-spacer {
+    flex: 1 1 auto;
+  }
+
+  .zoom-controls {
+    display     : flex;
+    align-items : center;
+    margin-right: 2em;
+
+    .zoom-label {
+      margin-right: .5em;
+    }
+  }
+}

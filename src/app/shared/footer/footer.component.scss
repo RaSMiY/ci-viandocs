@@ -1,0 +1,35 @@
+:host {
+  border-top-color: rgb(196, 198, 208);
+  border-top-style: solid;
+  border-top-width: 1px;
+
+  display: block;
+
+  .docs-footer-list {
+    align-items: center;
+    display    : flex;
+    flex-flow  : row wrap;
+    padding    : 8px;
+
+    .docs-footer-logo {
+      display    : flex;
+      align-items: center;
+      flex       : 1;
+
+      .footer-logo {
+        display    : flex;
+        align-items: center;
+      }
+    }
+
+    a {
+      color          : var(--mat-sys-on-surface-variant);
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}
