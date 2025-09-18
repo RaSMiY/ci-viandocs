@@ -1,8 +1,12 @@
 {
   "name": "ci-viandocs",
   "version": "0.0.0",
+   "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "ng": "ng",
+    "node-v": "nvm use",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

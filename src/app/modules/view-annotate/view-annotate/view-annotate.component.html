@@ -1,1 +1,8 @@
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+<section class="doc">
+      @for(page of doc.pages; track $index) {
+        <p class="page">
+          <img src="{{`${baseUrl}${page.imageUrl}`}}" alt="page {{$index}}" [style.width]="`${docSevice.zoom()}%`"/>
+          <span>Страница {{$index + 1}}</span>
+        </p>
+      }
+</section>

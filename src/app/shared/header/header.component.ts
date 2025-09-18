@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { ViewAnnotateService } from '../../modules/view-annotate/view-annotate/view-annotate.service';
 
 @Component({
   selector: 'ci-header',
@@ -13,5 +13,14 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  protected zoom = 100;
+  protected readonly docSevice = inject(ViewAnnotateService);
+  private readonly delta = 10;
+
+  protected zoomIn() {
+    this.docSevice.zoom.update(value => value + this.delta);
+  }
+
+  protected zoomOut() {
+    this.docSevice.zoom.update(value => value - this.delta);
+  }
 }
