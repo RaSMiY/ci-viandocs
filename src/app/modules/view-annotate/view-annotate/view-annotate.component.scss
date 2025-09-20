@@ -1,9 +1,18 @@
 :host {
   display: block;
+  // height: 100%;
 
-  .doc .page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
+  .doc {
+    position: relative;
+
+    .page {
+      display       : flex;
+      flex-direction: column;
+      align-items   : center;
+    }
+
+    ci-note {
+      position: absolute;
+    }
   }
 }

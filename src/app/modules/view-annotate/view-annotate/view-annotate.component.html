@@ -1,8 +1,14 @@
 <section class="doc">
+    @if (doc) {
       @for(page of doc.pages; track $index) {
         <p class="page">
-          <img src="{{`${baseUrl}${page.imageUrl}`}}" alt="page {{$index}}" [style.width]="`${docSevice.zoom()}%`"/>
+          <img src="{{`${baseUrl}${page.imageUrl}`}}" alt="page {{$index}}" [style.width]="`${docSevice.zoom()}%`" (click)="addAnnotation($event)"/>
           <span>Страница {{$index + 1}}</span>
         </p>
       }
+      
+      @for(note of notes; track $index) {
+        <ci-note [note]="note"></ci-note>
+      }
+    }
 </section>
