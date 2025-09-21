@@ -1,0 +1,50 @@
+<div class="controls">
+  @if (mode === Mode.EDIT) {
+  <button
+    matMiniFab
+    class="control-button"
+    aria-label="Button with drag_handle icon"
+    (pointerdown)="startDrag($event)"
+  >
+    <mat-icon>drag_handle</mat-icon>
+  </button>
+  <button
+    matMiniFab
+    class="control-button"
+    aria-label="Button with delete icon"
+    (click)="removeNote()"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button
+    matMiniFab
+    class="control-button"
+    aria-label="Button with check_small icon"
+    (click)="switchMode()"
+  >
+    <mat-icon>check_small</mat-icon>
+  </button>
+  } @if (mode === Mode.VIEW) {
+  <button
+    matMiniFab
+    class="control-button"
+    aria-label="Button with edit icon"
+    (click)="switchMode()"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  }
+</div>
+<mat-divider />
+@if (mode === Mode.EDIT) {
+<textarea
+  id="story"
+  name="story"
+  rows="5"
+  cols="33"
+  placeholder="Введите текст заметки..."
+  [formControl]="textareaControl"
+></textarea>
+} @else {
+<div class="note">{{ note().text }}</div>
+}

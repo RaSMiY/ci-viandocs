@@ -1,1 +1,15 @@
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+<section class="doc">
+  @if (doc) { @for(page of doc.pages; track $index) {
+  <p class="page">
+    <img
+      src="{{`${baseUrl}${page.imageUrl}`}}"
+      alt="page {{ $index }}"
+      [style.width]="`${docService.zoom()}%`"
+      (click)="addAnnotation($event)"
+    />
+    <span>Страница {{ $index + 1 }}</span>
+  </p>
+  } @for(item of docService.notes | keyvalue; track item.key) {
+  <ci-note [note]="item.value"></ci-note>
+  } }
+</section>

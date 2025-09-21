@@ -1,0 +1,17 @@
+:host {
+  display: block;
+
+  .doc {
+    position: relative;
+
+    .page {
+      display       : flex;
+      flex-direction: column;
+      align-items   : center;
+    }
+
+    ci-note {
+      position: absolute;
+    }
+  }
+}
