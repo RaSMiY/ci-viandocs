@@ -28,17 +28,20 @@ export class ViewAnnotateService {
   }
 
   /**
-   * Преобразует относительные координаты в процентах в абсолютные в пикселях и обратно.
+   * Преобразует координаты в пикселях для 100%-го масштаба в координаты для текущего масштабы и обратно.
    *
    * @param pos координаты
    * @param direction направление преобразования
    * @returns преобразованные координаты
    */
-  public getConvertedPosition(pos: Position, direction: 'toRelative' | 'toAbsolute'): Position {
+  public getConvertedPosition(
+    pos: Position,
+    direction: 'to100%Scale' | 'toCurrentScale'
+  ): Position {
     const context = this.getDimensionsContext();
     let [x, y] = [0, 0];
     const centerX = context.width / 2;
-    const mutiplier = direction === 'toRelative' ? 100 / context.zoom : context.zoom / 100;
+    const mutiplier = direction === 'to100%Scale' ? 100 / context.zoom : context.zoom / 100;
     const delta = Math.round(Math.abs(centerX - pos.left) * mutiplier);
     if (pos.left <= centerX) {
       x = centerX - delta;

@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Note } from '../../models/note';
 import { DestroyService } from 'src/app/core/destroy.service';
 import { ViewAnnotateService } from '../../view-annotate.service';
+import { Position } from '../../models/position';
 
 /**
  * Режим заметки. Нужен для включения/выключения режима редактирования.
@@ -98,10 +99,7 @@ export class NoteComponent implements OnInit {
         const { layerX: left, layerY: top } = event;
         this.top = top;
         this.left = left;
-        const note = this.docService.notes.get(this.note().id);
-        if (note) {
-          note.relPos = this.docService.getConvertedPosition({ top, left }, 'toRelative');
-        }
+        this.storeNotePosition({ top, left });
         this.cdr.detectChanges();
       });
   }
@@ -119,11 +117,23 @@ export class NoteComponent implements OnInit {
   }
 
   /**
-   * Обновляет позицию заметки в реестре, если она (позиция) была изменена.
+   * Сохраняет координаты заметки в реестре.
+   *
+   * @param pos координаты заметки
+   */
+  private storeNotePosition(pos: Position) {
+    const note = this.docService.notes.get(this.note().id);
+    if (note) {
+      note.relPos = this.docService.getConvertedPosition(pos, 'to100%Scale');
+    }
+  }
+
+  /**
+   * Обновляет позицию заметки на экране, в соответствии с сохранёнными координатами.
    */
   private updatePosition() {
     const { left, top } = this.note().relPos;
-    const pos = this.docService.getConvertedPosition({ left, top }, 'toAbsolute');
+    const pos = this.docService.getConvertedPosition({ left, top }, 'toCurrentScale');
     this.left = pos.left;
     this.top = pos.top;
   }

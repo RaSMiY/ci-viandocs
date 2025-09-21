@@ -75,7 +75,7 @@ export class ViewAnnotateComponent implements OnInit, OnDestroy {
    */
   protected addAnnotation(event: PointerEvent) {
     const { layerX: left, layerY: top } = event;
-    const posInPercents = this.docService.getConvertedPosition({ top, left }, 'toRelative');
+    const posInPercents = this.docService.getConvertedPosition({ top, left }, 'to100%Scale');
     const id = Date.now();
     this.docService.notes.set(id, {
       id,
