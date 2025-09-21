@@ -4,6 +4,9 @@ import { Note } from './models/note';
 import { DimensionsContext, Position } from './models/position';
 import { Doc } from './models/doc';
 
+/**
+ * Служба предназначена для хранения общих для компонентов данных и функций.
+ */
 @Injectable({ providedIn: 'root' })
 export class ViewAnnotateService {
   public zoom = signal(90);
@@ -14,6 +17,9 @@ export class ViewAnnotateService {
 
   public cdr!: ChangeDetectorRef;
 
+  /**
+   * Выводит в консоль список заметок в документе.
+   */
   public saveNotes() {
     if (this.doc) {
       this.doc.notes = Array.from(this.notes.values());
@@ -21,11 +27,21 @@ export class ViewAnnotateService {
     }
   }
 
-  public getConvertedPosition(pos: Position, direction: 'toRelative' | 'toAbsolute'): Position {
+  /**
+   * Преобразует координаты в пикселях для 100%-го масштаба в координаты для текущего масштабы и обратно.
+   *
+   * @param pos координаты
+   * @param direction направление преобразования
+   * @returns преобразованные координаты
+   */
+  public getConvertedPosition(
+    pos: Position,
+    direction: 'to100%Scale' | 'toCurrentScale'
+  ): Position {
     const context = this.getDimensionsContext();
     let [x, y] = [0, 0];
     const centerX = context.width / 2;
-    const mutiplier = direction === 'toRelative' ? 100 / context.zoom : context.zoom / 100;
+    const mutiplier = direction === 'to100%Scale' ? 100 / context.zoom : context.zoom / 100;
     const delta = Math.round(Math.abs(centerX - pos.left) * mutiplier);
     if (pos.left <= centerX) {
       x = centerX - delta;
@@ -36,6 +52,10 @@ export class ViewAnnotateService {
     return { left: x, top: y };
   }
 
+  /**
+   *
+   * @returns текущий контекст - размер контейнера и масштаб
+   */
   private getDimensionsContext(): DimensionsContext {
     return { ...this.containerSize, zoom: this.zoom() };
   }

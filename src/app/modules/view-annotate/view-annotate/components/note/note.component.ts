@@ -19,12 +19,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { Note } from '../../models/note';
 import { DestroyService } from 'src/app/core/destroy.service';
 import { ViewAnnotateService } from '../../view-annotate.service';
+import { Position } from '../../models/position';
 
+/**
+ * Режим заметки. Нужен для включения/выключения режима редактирования.
+ */
 enum Mode {
   EDIT,
   VIEW,
 }
 
+/**
+ * Компонент заметки. В режиме редактрования позволяет перемещать, удалять заметку и редактировать текст.
+ * Имеет кнопки управления:
+ * 1. Для перемещения заметки;
+ * 2. Для удаления заметки;
+ * 3. Для сохранения изменений;
+ * 4. Для включения режима редактирования.
+ */
 @Component({
   selector: 'ci-note',
   imports: [MatButtonModule, MatDividerModule, MatIconModule, ReactiveFormsModule],
@@ -63,6 +75,9 @@ export class NoteComponent implements OnInit {
     this.attachEvents();
   }
 
+  /**
+   * Включает/выключает режим редактирования.
+   */
   protected switchMode() {
     if (this.mode === Mode.EDIT) {
       this.mode = Mode.VIEW;
@@ -71,6 +86,12 @@ export class NoteComponent implements OnInit {
     }
   }
 
+  /**
+   * Начинает отслеживать перемещение указателя, если пользователь ухватился за "ручку" перемещения заметки.
+   * При отпускании кнопки мыши или прекращения касания пальца, отслеживание прекращается.
+   *
+   * @param $event событие интерфейса
+   */
   protected startDrag($event: UIEvent) {
     this.pointerMove$
       .pipe(filter((event: any) => event.layerX > 0 && event.layerY > 0))
@@ -78,10 +99,7 @@ export class NoteComponent implements OnInit {
         const { layerX: left, layerY: top } = event;
         this.top = top;
         this.left = left;
-        const note = this.docService.notes.get(this.note().id);
-        if (note) {
-          note.relPos = this.docService.getConvertedPosition({ top, left }, 'toRelative');
-        }
+        this.storeNotePosition({ top, left });
         this.cdr.detectChanges();
       });
   }
@@ -91,17 +109,38 @@ export class NoteComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  /**
+   * Первоначальная настройка текста заметки, при создании компонента.
+   */
   private setText() {
     this.textareaControl.setValue(this.note().text);
   }
 
+  /**
+   * Сохраняет координаты заметки в реестре.
+   *
+   * @param pos координаты заметки
+   */
+  private storeNotePosition(pos: Position) {
+    const note = this.docService.notes.get(this.note().id);
+    if (note) {
+      note.relPos = this.docService.getConvertedPosition(pos, 'to100%Scale');
+    }
+  }
+
+  /**
+   * Обновляет позицию заметки на экране, в соответствии с сохранёнными координатами.
+   */
   private updatePosition() {
     const { left, top } = this.note().relPos;
-    const pos = this.docService.getConvertedPosition({ left, top }, 'toAbsolute');
+    const pos = this.docService.getConvertedPosition({ left, top }, 'toCurrentScale');
     this.left = pos.left;
     this.top = pos.top;
   }
 
+  /**
+   * Подписка на события.
+   */
   private attachEvents() {
     this.zoom$.pipe(takeUntil(this.destroy$)).subscribe(() => this.updatePosition());
     this.textareaControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((text) => {

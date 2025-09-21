@@ -5,6 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ViewAnnotateService } from '../../modules/view-annotate/view-annotate/view-annotate.service';
 
+/**
+ * Верхняя часть страницы. Отображается всегда.
+ * Содержит ссылки на страницу автора, на репозиторий на Github'е, текущий масштаб, кнопки увеличения, уменьшения
+ * и кнопку сохранить, выводящую в консоль список созданных заметок в документе.
+ */
 @Component({
   selector: 'ci-header',
   imports: [MatToolbarModule, MatButtonModule, MatIconModule],
