@@ -2,6 +2,10 @@
     "name": "test doc",
     "pages": [
         {
+            "number": 0,
+            "imageUrl": "pages/ci-viandocs.png"
+        },
+        {
             "number": 1,
             "imageUrl": "pages/1.png"
         },
