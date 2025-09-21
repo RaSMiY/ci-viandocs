@@ -19,6 +19,9 @@ import { HttpClient } from '@angular/common/http';
 import { takeUntil } from 'rxjs';
 import { DestroyService } from 'src/app/core/destroy.service';
 
+/**
+ * Компонент отображающий документ и позволяющий создавать, удалять, редактировать и перемещать заметки.
+ */
 @Component({
   selector: 'ci-view-annotate',
   imports: [MatSlideToggleModule, NoteComponent, KeyValuePipe],
@@ -28,6 +31,7 @@ import { DestroyService } from 'src/app/core/destroy.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewAnnotateComponent implements OnInit, OnDestroy {
+  /** Пути для загрузки ресурсов и документов */
   protected readonly baseUrl = 'docs/1/';
   readonly docUrl = '1.json';
 
@@ -64,6 +68,11 @@ export class ViewAnnotateComponent implements OnInit, OnDestroy {
     this.attachEvents();
   }
 
+  /**
+   * Добавляет на страницу заметку в режиме редактирования. Идентификатором заметки служит текущее время.
+   *
+   * @param event
+   */
   protected addAnnotation(event: PointerEvent) {
     const { layerX: left, layerY: top } = event;
     const posInPercents = this.docService.getConvertedPosition({ top, left }, 'toRelative');
@@ -75,6 +84,9 @@ export class ViewAnnotateComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Выполняет подписку на различные события на странице. В частности на изменения размера контейнера.
+   */
   private attachEvents() {
     this.observer = new ResizeObserver((entries) => {
       this.zone.run(() => {

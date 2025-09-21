@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+/**
+ * Нижняя часть страницы. Отображается, если прокрутить документ до самого низа.
+ */
 @Component({
   selector: 'ci-footer',
   imports: [],
@@ -7,4 +10,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './footer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FooterComponent { }
+export class FooterComponent {}

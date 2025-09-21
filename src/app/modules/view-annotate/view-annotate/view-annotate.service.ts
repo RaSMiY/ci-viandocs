@@ -4,6 +4,9 @@ import { Note } from './models/note';
 import { DimensionsContext, Position } from './models/position';
 import { Doc } from './models/doc';
 
+/**
+ * Служба предназначена для хранения общих для компонентов данных и функций.
+ */
 @Injectable({ providedIn: 'root' })
 export class ViewAnnotateService {
   public zoom = signal(90);
@@ -14,6 +17,9 @@ export class ViewAnnotateService {
 
   public cdr!: ChangeDetectorRef;
 
+  /**
+   * Выводит в консоль список заметок в документе.
+   */
   public saveNotes() {
     if (this.doc) {
       this.doc.notes = Array.from(this.notes.values());
@@ -21,6 +27,13 @@ export class ViewAnnotateService {
     }
   }
 
+  /**
+   * Преобразует относительные координаты в процентах в абсолютные в пикселях и обратно.
+   *
+   * @param pos координаты
+   * @param direction направление преобразования
+   * @returns преобразованные координаты
+   */
   public getConvertedPosition(pos: Position, direction: 'toRelative' | 'toAbsolute'): Position {
     const context = this.getDimensionsContext();
     let [x, y] = [0, 0];
@@ -36,6 +49,10 @@ export class ViewAnnotateService {
     return { left: x, top: y };
   }
 
+  /**
+   *
+   * @returns текущий контекст - размер контейнера и масштаб
+   */
   private getDimensionsContext(): DimensionsContext {
     return { ...this.containerSize, zoom: this.zoom() };
   }
