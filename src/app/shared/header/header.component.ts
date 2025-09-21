@@ -17,10 +17,14 @@ export class HeaderComponent {
   private readonly delta = 10;
 
   protected zoomIn() {
-    this.docSevice.zoom.update(value => value + this.delta);
+    this.docSevice.zoom.update((value) => value + this.delta);
   }
 
   protected zoomOut() {
-    this.docSevice.zoom.update(value => value - this.delta);
+    this.docSevice.zoom.update((value) => value - this.delta);
+  }
+
+  protected save() {
+    this.docSevice.saveNotes();
   }
 }

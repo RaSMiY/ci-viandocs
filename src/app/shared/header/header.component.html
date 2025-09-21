@@ -7,23 +7,16 @@
   <span class="header-spacer"></span>
 
   <div class="zoom-controls">
-    <label class="zoom-label">Масштаб: {{docSevice.zoom()}}%</label>
+    <label class="zoom-label">Масштаб: {{ docSevice.zoom() }}%</label>
 
-    <button
-      matIconButton
-      class=""
-      aria-label="icon-button with + icon"
-      (click)="zoomIn()"
-    >
+    <button matIconButton class="" aria-label="icon-button with + icon" (click)="zoomIn()">
       <mat-icon>add</mat-icon>
     </button>
-    <button matIconButton class="" aria-label="icon-button with - icon"
-      (click)="zoomOut()"
-    >
+    <button matIconButton class="" aria-label="icon-button with - icon" (click)="zoomOut()">
       <mat-icon>remove</mat-icon>
     </button>
 
-    <button matButton="tonal" class="save-button">Сохранить</button>
+    <button matButton="tonal" class="save-button" (click)="save()">Сохранить</button>
   </div>
 
   <a

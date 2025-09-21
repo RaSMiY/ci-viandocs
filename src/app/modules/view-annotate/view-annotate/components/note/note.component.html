@@ -36,4 +36,15 @@
   }
 </div>
 <mat-divider />
-<div class="note">note works!</div>
+@if (mode === Mode.EDIT) {
+<textarea
+  id="story"
+  name="story"
+  rows="5"
+  cols="33"
+  placeholder="Введите текст заметки..."
+  [formControl]="textareaControl"
+></textarea>
+} @else {
+<div class="note">{{ note().text }}</div>
+}

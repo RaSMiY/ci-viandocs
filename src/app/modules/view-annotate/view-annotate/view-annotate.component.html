@@ -9,7 +9,7 @@
     />
     <span>Страница {{ $index + 1 }}</span>
   </p>
-  } @for(note of docService.notes; track note.id) {
-  <ci-note [note]="note"></ci-note>
+  } @for(item of docService.notes | keyvalue; track item.key) {
+  <ci-note [note]="item.value"></ci-note>
   } }
 </section>

@@ -8,26 +8,28 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
+
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { Doc } from './models/doc';
-import doc from '../../../../../public/1.json';
 import { ViewAnnotateService } from './view-annotate.service';
 import { NoteComponent } from './components/note/note.component';
+import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs';
+import { DestroyService } from 'src/app/core/destroy.service';
 
 @Component({
   selector: 'ci-view-annotate',
-  imports: [MatSlideToggleModule, NoteComponent],
+  imports: [MatSlideToggleModule, NoteComponent, KeyValuePipe],
+  providers: [DestroyService],
   templateUrl: './view-annotate.component.html',
   styleUrl: './view-annotate.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewAnnotateComponent implements OnInit, OnDestroy {
-  // readonly baseUrl = 'https://ru.freepik.com/free-photos-vectors/бесплатные-png';
   protected readonly baseUrl = 'docs/1/';
-  // readonly docUrl = 'public/1.json';
-  // doc = input.required<Doc>();
-  doc = doc;
-  // protected doc?: Doc;
+  readonly docUrl = '1.json';
 
   protected readonly docService = inject(ViewAnnotateService);
 
@@ -35,27 +37,39 @@ export class ViewAnnotateComponent implements OnInit, OnDestroy {
   private zone = inject(NgZone);
   private hostEl = inject(ElementRef);
 
-  private observer = new ResizeObserver((entries) => {
-    entries.forEach((entry) => {
-      console.log('width', entry.contentRect.width);
-      console.log('height', entry.contentRect.height);
-    });
-  });
+  private http = inject(HttpClient);
+  private destroy$ = inject(DestroyService);
+
+  private observer = new ResizeObserver((entries) => {});
 
   constructor() {
     this.docService.cdr = this.cdr;
   }
 
+  get doc() {
+    return this.docService.doc;
+  }
+
   ngOnInit(): void {
+    this.http
+      .get(`${this.docUrl}`, {
+        observe: 'body',
+        responseType: 'json',
+      })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((doc: any) => {
+        this.docService.doc = doc;
+        this.cdr.detectChanges();
+      });
     this.attachEvents();
   }
 
   protected addAnnotation(event: PointerEvent) {
-    const { layerX: left, layerY: top, clientX, clientY, view } = event;
+    const { layerX: left, layerY: top } = event;
     const posInPercents = this.docService.getConvertedPosition({ top, left }, 'toRelative');
-    console.log(posInPercents);
-    this.docService.notes.push({
-      id: Date.now(),
+    const id = Date.now();
+    this.docService.notes.set(id, {
+      id,
       relPos: posInPercents,
       text: '',
     });
